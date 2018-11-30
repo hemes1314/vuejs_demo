@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Vue 测试实例</title>
+	<script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+</head>
+<body>
+<div id="vue_det">
+	<h1>site: {{site}}</h1>
+	<h1>url: {{url}}</h1>
+	<h1>{{alexa}}</h1>
+</div>
+<script type="text/javascript">
+	var data = {site: "XX网站",url: "www.runoob.com",alexa: 10000}
+	var vm = new Vue({
+		el: '#vue_det',
+		data: data
+	})
+	// 相同
+	document.write(vm.site === data.site) //true
+	document.write("<br>")
+	// 设置属性也会影响到原始数据
+	vm.site = "Runoob"
+	document.write(data.site + "<br>")
+	
+	data.alexa = 123;
+	document.write(vm.alexa + "<br>");
+	
+	document.write("data:");
+	document.write(vm.$data === data);//true
+	document.write("<br>el:");//true
+	document.write(vm.$el === document.getElementById("vue_det"));//true
+</script>
+</body>
+</html>
