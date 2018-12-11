@@ -3,8 +3,8 @@
     <head>
         <title>Spring Security Example </title>
 		<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
-		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-		<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+		<script src="https://unpkg.com/axios@0.18.0/dist/axios.min.js"></script>
+		<script src="https://unpkg.com/vue-router@3.0.2/dist/vue-router.js"></script>
 		
 		<script src="./lib/common.js"></script>
     </head>
@@ -29,10 +29,6 @@ window.onload = function(){
         },
         methods:{
 			login:function(){
-				// `event` 是原生 DOM 事件
-				if (event) {
-					console.log(event.target.tagName)
-				}
 				//发送 post 请求
 				$ajax({
 					method: 'post',
