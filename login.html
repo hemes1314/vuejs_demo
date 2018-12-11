@@ -3,24 +3,19 @@
     <head>
         <title>Spring Security Example </title>
 		<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 		
-		<script src="lib/common.js"></script>
+		<script src="./lib/common.js"></script>
     </head>
     <body>
 		<div id="vue_det">
-			<div th:if="${param.error}">
-				Invalid username and password.
-			</div>
-			<div th:if="${param.logout}">
-				You have been logged out.
-			</div>
-			<form action="http://127.0.0.1:8081/login" method="post">
 				<div><label> User Name : <input v-model="username" placeholder="用户名"/> </label></div>
 				<div><label> Password: <input type="password" v-model="password" placeholder="密码"/> </label></div>
-				<div><input type="submit" value="Sign In" /></div><!--v-on:click="login"-->
-			</form>
+				<div><input type="button" v-on:click="login" value="Sign In" /></div>
+				<div v-if="login_status===1" style="color:red;"> 
+					Invalid username and password.
+				</div>
 		</div>
     </body>
 <script>
@@ -28,27 +23,37 @@ window.onload = function(){
     var vm = new Vue({
         el:'#vue_det',
         data:{
-            msg:'Hello World!',
-						username: '',
-						password: ''
+            username: 'admin',
+            password: 'admin',
+            login_status: 0
         },
         methods:{
-						login:function(){
-								// `this` 在方法里指当前 Vue 实例
-								console.log('Hello ' + this.msg + '!')
-								// `event` 是原生 DOM 事件
-								if (event) {
-									console.log(event.target.tagName)
-								}
-								//发送 post 请求
-								this.$http.post(server_host+'/login',{name:this.username,password:this.password},{emulateJSON:true}).then(function(res){
-										document.write(res.body);    
-								},function(res){
-										console.log('请求失败处理');
-										console.log(res.status);
-								});
-						}
-        }
+			login:function(){
+				// `event` 是原生 DOM 事件
+				if (event) {
+					console.log(event.target.tagName)
+				}
+				//发送 post 请求
+				$ajax({
+					method: 'post',
+					url: '/login',
+					data: {
+						username:this.username,
+						password:this.password
+					}
+				})
+				.then(resp => {
+					console.log(resp.data);
+					this.login_status = resp.data.status;
+					console.log(this.login_status);
+					if(resp.data.status == 0) {
+						location.href="/home.html";
+					}
+				}).catch(err => {             //
+					console.log('请求失败：'+err.status+','+err.statusText);
+				});
+			}
+		}
     });
 }
 </script>
